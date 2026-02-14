@@ -232,7 +232,7 @@ export default function Contact() {
                   }
                   className="w-full bg-[#1A1A1A] border border-white/10 rounded-lg px-6 py-4 text-white/60 focus:outline-none focus:border-primary/50 transition-colors appearance-none cursor-pointer"
                 >
-                  <option value="">COMPUTER VISION</option>
+                  <option value="">Select Service that you're Interested</option>
                   {services.map((service) => (
                     <option key={service} value={service}>
                       {service.toUpperCase()}
