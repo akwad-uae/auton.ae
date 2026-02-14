@@ -1,0 +1,20 @@
+# Development files
+node_modules
+.env
+.env.local
+
+# Build artifacts (except dist/spa which is needed)
+dist/server
+
+# Development config
+vite.config.server.ts
+
+# Tests
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+
+# Documentation
+*.md
+!README.md

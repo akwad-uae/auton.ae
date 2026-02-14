@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Contact Form</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background: #007bff; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    </style>
+</head>
+<body>
+    <h1>Test Contact Form - Google Apps Script Integration</h1>
+    
+    <form id="contactForm">
+        <div class="form-group">
+            <label for="fullName">Full Name *</label>
+            <input type="text" id="fullName" name="fullName" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone">
+        </div>
+        
+        <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" id="company" name="company">
+        </div>
+        
+        <div class="form-group">
+            <label for="service">Service</label>
+            <select id="service" name="service">
+                <option value="">Select a service</option>
+                <option value="AI-Enabled Software Services">AI-Enabled Software Services</option>
+                <option value="Computer Vision">Computer Vision</option>
+                <option value="Natural Language Processing">Natural Language Processing</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="message">Message *</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        
+        <button type="submit" id="submitBtn">Send Test Message</button>
+    </form>
+    
+    <div id="status"></div>
+    
+    <script>
+        // Replace this with your actual Google Apps Script URL
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyq_eYQbJUSJkv9clOOzYFiLVFYyAcj8j37IxNUDm0CHyCi8Dct6RoI9boyQM2Fh5oS/exec';
+        
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const statusDiv = document.getElementById('status');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Sending...';
+            statusDiv.innerHTML = '';
+            
+            try {
+                // Collect form data
+                const formData = {
+                    fullName: document.getElementById('fullName').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    company: document.getElementById('company').value,
+                    service: document.getElementById('service').value,
+                    message: document.getElementById('message').value,
+                    attachment: null
+                };
+                
+                console.log('Sending form data:', formData);
+                
+                // Send to Google Apps Script
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                console.log('Response status:', response.status);
+                
+                const result = await response.json();
+                console.log('Response data:', result);
+                
+                if (result.success) {
+                    statusDiv.innerHTML = '<div class="status success">✅ Message sent successfully! Check your email at info@autonomousai.ae</div>';
+                    document.getElementById('contactForm').reset();
+                } else {
+                    throw new Error(result.error || 'Unknown error occurred');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                statusDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+            } finally {
+                // Re-enable button
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Test Message';
+            }
+        });
+    </script>
+</body>
+</html>
