@@ -83,12 +83,12 @@ export default function Footer() {
 
           {/* Right - Contact */}
           <div className="text-xs text-white/70 text-center md:text-right">
-            <p className="mb-1">+971562992229</p>
+            <p className="mb-1">+971507245371</p>
             <a
               href="mailto:info@autonomousai.ae"
               className="hover:text-white transition-colors"
             >
-              info@autonomousai.ae
+              Info@auton.ae
             </a>
           </div>
         </div>
